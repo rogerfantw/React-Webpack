@@ -7,6 +7,14 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const webpack = require("webpack");
+const htmlSource = ["bundle", "home"] // ! HTML 設定
+const html = htmlSource.map(n => (
+	new HtmlWebpackPlugin({
+		filename: `${n}/index.html`,
+		template: `./src/views/${n}.html`,
+		chunks: [`${n}`]
+	})
+))
 
 module.exports = {
 	mode: "development", // "development" | "production"
@@ -27,17 +35,8 @@ module.exports = {
 		port: 8080,
 	},
 	devtool: "source-map",
-	plugins: [  // ! HTML 設定
-		new HtmlWebpackPlugin({
-			filename: "bundle/index.html",
-			template: "./src/views/bundle.html",
-			chunks: ["bundle"],
-		}),
-		new HtmlWebpackPlugin({
-			filename: "home/index.html",
-			template: "./src/views/home.html",
-			chunks: ["home"],
-		}),
+	plugins: [
+		...html,
 		new MiniCssExtractPlugin({ // ! scss 的關聯在 JS中 設定
 			filename: "[name]/[name].[hash].css",
 		}),
