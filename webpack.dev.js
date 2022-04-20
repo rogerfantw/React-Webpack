@@ -23,7 +23,7 @@ module.exports = {
 		home: path.resolve(__dirname, "src/home.js"),
 	},
 	output: {
-		filename: "[name]/[name].[hash].js",
+		filename: "[name]/[name].[fullhash:8].js",
 		path: path.resolve(__dirname, "dist"),
 		clean: true,
 	},
@@ -38,7 +38,7 @@ module.exports = {
 	plugins: [
 		...html,
 		new MiniCssExtractPlugin({ // ! scss 的關聯在 JS中 設定
-			filename: "[name]/[name].[hash].css",
+			filename: "[name]/[name].[fullhash:8].css",
 		}),
 	],
 	module: {
@@ -60,10 +60,16 @@ module.exports = {
 			{
 				test: /\.(png|svg|jpg|jpeg|gif)$/i,
 				type: "asset/resource",
+				generator: {
+					filename: "img/[name].[contenthash:8][ext]"
+				}
 			},
 			{
 				test: /\.(woff|woff2|eot|ttf|otf)$/i,
 				type: "asset/resource",
+				generator: {
+					filename: "font/[name][ext]"
+				}
 			},
 		],
 	},
